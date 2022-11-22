@@ -11,7 +11,7 @@ namespace XIVAutoAttack.Combos.Tank.PLDCombos;
 
 internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 {
-    public override string Author => "Ï«¥ÙMoon";
+    public override string Author => "manju";
 
     internal enum CommandType : byte
     {
@@ -20,7 +20,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
     protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
     {
-        //{CommandType.None, "" }, //Ğ´ºÃ×¢ÊÍ°¡£¡ÓÃÀ´ÌáÊ¾ÓÃ»§µÄ¡£
+        //{CommandType.None, "" }, //å†™å¥½æ³¨é‡Šå•Šï¼ç”¨æ¥æç¤ºç”¨æˆ·çš„ã€‚
     };
 
 
@@ -30,27 +30,27 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.µ¥ÌåÖÎÁÆ, $"{Clemency}"},
-        {DescType.·¶Î§·ÀÓù, $"{DivineVeil}, {PassageofArms}"},
-        {DescType.µ¥Ìå·ÀÓù, $"{Sentinel}, {Sheltron}"},
-        {DescType.ÒÆ¶¯¼¼ÄÜ, $"{Intervene}"},
+        {DescType.å•ä½“æ²»ç–—, $"{Clemency}"},
+        {DescType.èŒƒå›´é˜²å¾¡, $"{DivineVeil}, {PassageofArms}"},
+        {DescType.å•ä½“é˜²å¾¡, $"{Sentinel}, {Sheltron}"},
+        {DescType.ç§»åŠ¨æŠ€èƒ½, $"{Intervene}"},
     };
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        //Èı¸ö´óÕĞ
+        //ä¸‰ä¸ªå¤§æ‹›
         if (BladeofValor.ShouldUse(out act, mustUse: true)) return true;
         if (BladeofFaith.ShouldUse(out act, mustUse: true)) return true;
         if (BladeofTruth.ShouldUse(out act, mustUse: true)) return true;
 
-        //Ä§·¨ÈıÖÖ×ËÊÆ
+        //é­”æ³•ä¸‰ç§å§¿åŠ¿
         if (CanUseConfiteor(out act)) return true;
 
-        //AOE ¶şÁ¬
+        //AOE äºŒè¿
         if (Prominence.ShouldUse(out act)) return true;
         if (TotalEclipse.ShouldUse(out act)) return true;
 
-        //Êê×ï½£
+        //èµç½ªå‰‘
         if (Atonement.ShouldUse(out act))
         {
             if (Player.HasStatus(true, StatusID.FightOrFlight)
@@ -59,13 +59,13 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
             if (Player.StatusStack(true, StatusID.SwordOath) > 1) return true;
         }
-        //µ¥ÌåÈıÁ¬
+        //å•ä½“ä¸‰è¿
         if (GoringBlade.ShouldUse(out act)) return true;
         if (RageofHalone.ShouldUse(out act)) return true;
         if (RiotBlade.ShouldUse(out act)) return true;
         if (FastBlade.ShouldUse(out act)) return true;
 
-        //Í¶¶Ü
+        //æŠ•ç›¾
         if (CommandController.Move && MoveAbility(1, out act)) return true;
         if (ShieldLob.ShouldUse(out act)) return true;
 
@@ -74,7 +74,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        //µ÷Í£
+        //è°ƒåœ
         if (Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
         return false;
@@ -82,7 +82,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
     private protected override bool HealSingleGCD(out IAction act)
     {
-        //ÉîÈÊºñÔó
+        //æ·±ä»åšæ³½
         if (Clemency.ShouldUse(out act)) return true;
 
         return false;
@@ -90,10 +90,10 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
     private protected override bool DefenceAreaAbility(byte abilityRemain, out IAction act)
     {
-        //Ê¥¹âÄ»Á±
+        //åœ£å…‰å¹•å¸˜
         if (DivineVeil.ShouldUse(out act)) return true;
 
-        //Îä×°ÊùÎÀ
+        //æ­¦è£…æˆå«
         if (PassageofArms.ShouldUse(out act)) return true;
 
         if (Reprisal.ShouldUse(out act, mustUse: true)) return true;
@@ -105,16 +105,16 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
     {
         if (SettingBreak)
         {
-            //Õ½ÌÓ·´Ó¦ ¼ÓBuff
-            if (abilityRemain == 1 && CanUseFightorFlight(out act)) return true;
+            //æˆ˜é€ƒååº” åŠ Buff
+            if (Player.HasStatus(true, StatusID.RiotBlade) && CanUseFightorFlight(out act)) return true;
 
-            //°²»êÆíµ»
+            //å®‰é­‚ç¥ˆç¥·
             //if (SlowLoop && CanUseRequiescat(out act)) return true;
             if (abilityRemain == 1 && CanUseRequiescat(out act)) return true;
         }
 
 
-        //¶òÔËÁ÷×ª
+        //å„è¿æµè½¬
         if (CircleofScorn.ShouldUse(out act, mustUse: true))
         {
             if (!IsFullParty) return true;
@@ -127,7 +127,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
         }
 
-        //Éî°ÂÖ®Áé
+        //æ·±å¥¥ä¹‹çµ
         if (SpiritsWithin.ShouldUse(out act, mustUse: true))
         {
             //if (SlowLoop && inOpener && IsLastWeaponSkill(true, Actions.RiotBlade)) return true;
@@ -137,7 +137,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
             if (FightorFlight.ElapsedAfterGCD(3)) return true;
         }
 
-        //µ÷Í£
+        //è°ƒåœ
         if (Intervene.Target.DistanceToPlayer() < 1 && !IsMoving && Target.HasStatus(true, StatusID.GoringBlade))
         {
             if (FightorFlight.ElapsedAfterGCD(2) && Intervene.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
@@ -158,17 +158,17 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
         if (abilityRemain == 1)
         {
-            //Ô¤¾¯£¨¼õÉË30%£©
+            //é¢„è­¦ï¼ˆå‡ä¼¤30%ï¼‰
             if (Sentinel.ShouldUse(out act)) return true;
 
-            //Ìú±Ú£¨¼õÉË20%£©
+            //é“å£ï¼ˆå‡ä¼¤20%ï¼‰
             if (Rampart.ShouldUse(out act)) return true;
         }
-        //½µµÍ¹¥»÷
-        //Ñ©³ğ
+        //é™ä½æ”»å‡»
+        //é›ªä»‡
         if (Reprisal.ShouldUse(out act)) return true;
 
-        //¸ÉÔ¤£¨¼õÉË10%£©
+        //å¹²é¢„ï¼ˆå‡ä¼¤10%ï¼‰
         if (!HaveShield && Intervention.ShouldUse(out act)) return true;
 
         act = null;
@@ -176,7 +176,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÄÜ·ñÊ¹ÓÃÕ½ÌÓ·´Ó¦
+    /// åˆ¤æ–­èƒ½å¦ä½¿ç”¨æˆ˜é€ƒååº”
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
@@ -184,7 +184,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
     {
         if (FightorFlight.ShouldUse(out act))
         {
-            //ÔÚ4ÈË±¾µÀÖĞ
+            //åœ¨4äººæœ¬é“ä¸­
             if (!IsFullParty)
             {
                 if (!Player.HasStatus(true, StatusID.Requiescat)
@@ -193,7 +193,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
                 return false;
             }
-            //ÆğÊÖÔÚÏÈ·æ½£ºó
+            //èµ·æ‰‹åœ¨å…ˆé”‹å‰‘å
             return true;
         }
 
@@ -202,19 +202,19 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÄÜ·ñÊ¹ÓÃ°²»êÆíµ»
+    /// åˆ¤æ–­èƒ½å¦ä½¿ç”¨å®‰é­‚ç¥ˆç¥·
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
     private bool CanUseRequiescat(out IAction act)
     {
-        //°²»êÆíµ»
+        //å®‰é­‚ç¥ˆç¥·
         if (Requiescat.ShouldUse(out act, mustUse: true))
         {
-            //ÔÚÕ½ÌÓbuffÊ±¼äÊ£17ÃëÒÔÏÂÊ±ÊÍ·Å
+            //åœ¨æˆ˜é€ƒbuffæ—¶é—´å‰©17ç§’ä»¥ä¸‹æ—¶é‡Šæ”¾
             if (Player.HasStatus(true, StatusID.FightOrFlight) && Player.WillStatusEnd(17, true, StatusID.FightOrFlight) && Target.HasStatus(true, StatusID.GoringBlade))
             {
-                //ÔÚÆğÊÖÖĞÊ±,ÍõÈ¨½£ºóÊÍ·Å
+                //åœ¨èµ·æ‰‹ä¸­æ—¶,ç‹æƒå‰‘åé‡Šæ”¾
                 return true;
             }
         }
@@ -225,7 +225,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
 
 
     /// <summary>
-    /// »Ú×ï,Ê¥Áé,Ê¥»·
+    /// æ‚”ç½ª,åœ£çµ,åœ£ç¯
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
@@ -234,7 +234,7 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
         act = null;
         if (Player.HasStatus(true, StatusID.SwordOath)) return false;
 
-        //ÓĞ°²»êÆíµ»buff,ÇÒÃ»ÔÚÕ½ÌÓÖĞ
+        //æœ‰å®‰é­‚ç¥ˆç¥·buff,ä¸”æ²¡åœ¨æˆ˜é€ƒä¸­
         if (Player.HasStatus(true, StatusID.Requiescat) && !Player.HasStatus(true, StatusID.FightOrFlight))
         {
             //if (SlowLoop && !IsLastWeaponSkill(true, GoringBlade) && !IsLastWeaponSkill(true, Atonement)) return false;
@@ -260,12 +260,12 @@ internal sealed class PLDCombo_Default : PLDCombo_Base<CommandType>
     {
         if (HaveShield)
         {
-            //¶ÜÕó
+            //ç›¾é˜µ
             if (Sheltron.ShouldUse(out act)) return true;
         }
         else
         {
-            //±£»¤
+            //ä¿æŠ¤
             if (Cover.ShouldUse(out act)) return true;
         }
 
