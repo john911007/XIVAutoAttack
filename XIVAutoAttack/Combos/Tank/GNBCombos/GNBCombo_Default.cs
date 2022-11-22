@@ -11,7 +11,7 @@ namespace XIVAutoAttack.Combos.Tank.GNBCombos;
 
 internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 {
-    public override string Author => "Ï«¥ÙMoon";
+    public override string Author => "cese";
 
     internal enum CommandType : byte
     {
@@ -20,46 +20,46 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     protected override SortedList<CommandType, string> CommandDescription => new SortedList<CommandType, string>()
     {
-        //{CommandType.None, "" }, //Ğ´ºÃ×¢ÊÍ°¡£¡ÓÃÀ´ÌáÊ¾ÓÃ»§µÄ¡£
+        //{CommandType.None, "" }, //å†™å¥½æ³¨é‡Šå•Šï¼ç”¨æ¥æç¤ºç”¨æˆ·çš„ã€‚
     };
     protected override bool CanHealSingleSpell => false;
     protected override bool CanHealAreaSpell => false;
 
     public override SortedList<DescType, string> DescriptionDict => new()
     {
-        {DescType.µ¥ÌåÖÎÁÆ, $"{Aurora}"},
-        {DescType.·¶Î§·ÀÓù, $"{HeartofLight}"},
-        {DescType.µ¥Ìå·ÀÓù, $"{HeartofStone}, {Nebula}, {Camouflage}"},
-        {DescType.ÒÆ¶¯¼¼ÄÜ, $"{RoughDivide}"},
+        {DescType.å•ä½“æ²»ç–—, $"{Aurora}"},
+        {DescType.èŒƒå›´é˜²å¾¡, $"{HeartofLight}"},
+        {DescType.å•ä½“é˜²å¾¡, $"{HeartofStone}, {Nebula}, {Camouflage}"},
+        {DescType.ç§»åŠ¨æŠ€èƒ½, $"{RoughDivide}"},
     };
 
     private protected override bool GeneralGCD(out IAction act)
     {
-        //ÁÒÑÀ
+        //çƒˆç‰™
         if (CanUseGnashingFang(out act)) return true;
 
-        //ÒôËÙÆÆ
+        //éŸ³é€Ÿç ´
         if (CanUseSonicBreak(out act)) return true;
 
-        //±¶¹¥
+        //å€æ”»
         if (CanUseDoubleDown(out act)) return true;
 
-        //ÁÒÑÀºó¶şÁ¬
+        //çƒˆç‰™åäºŒè¿
         if (WickedTalon.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         if (SavageClaw.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
 
-        //ÃüÔËÖ®»· AOE
+        //å‘½è¿ä¹‹ç¯ AOE
         if (FatedCircle.ShouldUse(out act)) return true;
 
-        //±¬·¢»÷   
+        //çˆ†å‘å‡»   
         if (CanUseBurstStrike(out act)) return true;
 
         //AOE
         if (DemonSlaughter.ShouldUse(out act)) return true;
         if (DemonSlice.ShouldUse(out act)) return true;
 
-        //µ¥ÌåÈıÁ¬
-        //Èç¹ûÁÒÑÀÊ£0.5ÃëÀäÈ´ºÃ,²»ÊÍ·Å»ù´¡Á¬»÷,Ö÷ÒªÒòÎª¼¼ËÙ²»Í¬¿ÉÄÜ»áÊ¹ÁÒÑÀÑÓºóÌ«¶àËùÒÔÅĞ¶¨Ò»ÏÂ
+        //å•ä½“ä¸‰è¿
+        //å¦‚æœçƒˆç‰™å‰©0.5ç§’å†·å´å¥½,ä¸é‡Šæ”¾åŸºç¡€è¿å‡»,ä¸»è¦å› ä¸ºæŠ€é€Ÿä¸åŒå¯èƒ½ä¼šä½¿çƒˆç‰™å»¶åå¤ªå¤šæ‰€ä»¥åˆ¤å®šä¸€ä¸‹
         if (GnashingFang.IsCoolDown && GnashingFang.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
         if (SolidBarrel.ShouldUse(out act)) return true;
         if (BrutalShell.ShouldUse(out act)) return true;
@@ -78,37 +78,37 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     private protected override bool AttackAbility(byte abilityRemain, out IAction act)
     {
-        //ÎŞÇé,Ä¿Ç°Ö»ÓĞ4GCDÆğÊÖµÄÅĞ¶Ï
+        //æ— æƒ…,ç›®å‰åªæœ‰4GCDèµ·æ‰‹çš„åˆ¤æ–­
         if (SettingBreak && abilityRemain == 1 && CanUseNoMercy(out act)) return true;
 
-        //Î£ÏÕÁìÓò
+        //å±é™©é¢†åŸŸ
         if (DangerZone.ShouldUse(out act))
         {
             if (!IsFullParty) return true;
 
-            //µÈ¼¶Ğ¡ÓÚÁÒÑÀ,
+            //ç­‰çº§å°äºçƒˆç‰™,
             if (!GnashingFang.EnoughLevel && (Player.HasStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(15))) return true;
 
-            //±¬·¢ÆÚ,ÁÒÑÀÖ®ºó
+            //çˆ†å‘æœŸ,çƒˆç‰™ä¹‹å
             if (Player.HasStatus(true, StatusID.NoMercy) && GnashingFang.IsCoolDown) return true;
 
-            //·Ç±¬·¢ÆÚ
+            //éçˆ†å‘æœŸ
             if (!Player.HasStatus(true, StatusID.NoMercy) && !GnashingFang.WillHaveOneCharge(20)) return true;
         }
 
-        //¹­ĞÎ³å²¨
+        //å¼“å½¢å†²æ³¢
         if (CanUseBowShock(out act)) return true;
 
-        //Ğø½£
+        //ç»­å‰‘
         if (JugularRip.ShouldUse(out act)) return true;
         if (AbdomenTear.ShouldUse(out act)) return true;
         if (EyeGouge.ShouldUse(out act)) return true;
         if (Hypervelocity.ShouldUse(out act)) return true;
 
-        //ÑªÈÀ
+        //è¡€å£¤
         if (GnashingFang.IsCoolDown && Bloodfest.ShouldUse(out act)) return true;
 
-        //¸ã¸ã¹¥»÷,´Ö·ÖÕ¶
+        //æææ”»å‡»,ç²—åˆ†æ–©
         if (RoughDivide.Target.DistanceToPlayer() < 1 && !IsMoving)
         {
             if (RoughDivide.ShouldUse(out act)) return true;
@@ -127,7 +127,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     private protected override bool MoveAbility(byte abilityRemain, out IAction act)
     {
-        //Í»½ø
+        //çªè¿›
         if (RoughDivide.ShouldUse(out act, emptyOrSkipCombo: true)) return true;
         return false;
     }
@@ -135,20 +135,20 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     {
         if (abilityRemain == 2)
         {
-            //¼õÉË10%£©
+            //å‡ä¼¤10%ï¼‰
             if (HeartofStone.ShouldUse(out act)) return true;
 
-            //ĞÇÔÆ£¨¼õÉË30%£©
+            //æ˜Ÿäº‘ï¼ˆå‡ä¼¤30%ï¼‰
             if (Nebula.ShouldUse(out act)) return true;
 
-            //Ìú±Ú£¨¼õÉË20%£©
+            //é“å£ï¼ˆå‡ä¼¤20%ï¼‰
             if (Rampart.ShouldUse(out act)) return true;
 
-            //Î±×°£¨¼õÉË10%£©
+            //ä¼ªè£…ï¼ˆå‡ä¼¤10%ï¼‰
             if (Camouflage.ShouldUse(out act)) return true;
         }
-        //½µµÍ¹¥»÷
-        //Ñ©³ğ
+        //é™ä½æ”»å‡»
+        //é›ªä»‡
         if (Reprisal.ShouldUse(out act)) return true;
 
         act = null;
@@ -164,18 +164,18 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     private bool CanUseNoMercy(out IAction act)
     {
-        //µÈ¼¶µÍÓÚ±¬·¢»÷ÊÇÅĞ¶Ï
+        //ç­‰çº§ä½äºçˆ†å‘å‡»æ˜¯åˆ¤æ–­
         if (!BurstStrike.EnoughLevel && NoMercy.ShouldUse(out act)) return true;
 
         if (BurstStrike.EnoughLevel && NoMercy.ShouldUse(out act))
         {
-            //4GCDÆğÊÖÅĞ¶Ï
+            //4GCDèµ·æ‰‹åˆ¤æ–­
             if (IsLastWeaponSkill((ActionID)KeenEdge.ID) && Ammo == 1 && !GnashingFang.IsCoolDown && !Bloodfest.IsCoolDown) return true;
 
-            //3µ¯½øÎŞÇé
+            //3å¼¹è¿›æ— æƒ…
             else if (Ammo == (Level >= 88 ? 3 : 2)) return true;
 
-            //2µ¯½øÎŞÇé
+            //2å¼¹è¿›æ— æƒ…
             else if (Ammo == 2 && GnashingFang.IsCoolDown) return true;
         }
 
@@ -186,49 +186,49 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
     private bool CanUseGnashingFang(out IAction act)
     {
-        //»ù´¡ÅĞ¶Ï
+        //åŸºç¡€åˆ¤æ–­
         if (GnashingFang.ShouldUse(out act))
         {
-            //ÔÚ4ÈË±¾µÀÖĞÊ¹ÓÃ
+            //åœ¨4äººæœ¬é“ä¸­ä½¿ç”¨
             if (!IsFullParty) return true;
 
-            //ÎŞÇéÖĞ3µ¯ÁÒÑÀ
+            //æ— æƒ…ä¸­3å¼¹çƒˆç‰™
             if (Ammo == (Level >= 88 ? 3 : 2) && (Player.HasStatus(true, StatusID.NoMercy) || !NoMercy.WillHaveOneCharge(55))) return true;
 
-            //ÎŞÇéÍâÁÒÑÀ
+            //æ— æƒ…å¤–çƒˆç‰™
             if (Ammo > 0 && !NoMercy.WillHaveOneCharge(17) && NoMercy.WillHaveOneCharge(35)) return true;
 
-            //3µ¯ÇÒ½«»áÒç³ö×Óµ¯µÄÇé¿ö,ÌáÇ°ÔÚÎŞÇéÇ°½øÁÒÑÀ
+            //3å¼¹ä¸”å°†ä¼šæº¢å‡ºå­å¼¹çš„æƒ…å†µ,æå‰åœ¨æ— æƒ…å‰è¿›çƒˆç‰™
             if (Ammo == 3 && IsLastWeaponSkill((ActionID)BrutalShell.ID) && NoMercy.WillHaveOneCharge(3)) return true;
 
-            //1µ¯ÇÒÑªÈÀ¿ìÀäÈ´ºÃÁË
+            //1å¼¹ä¸”è¡€å£¤å¿«å†·å´å¥½äº†
             if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && Bloodfest.WillHaveOneCharge(5)) return true;
 
-            //4GCDÆğÊÖÁÒÑÀÅĞ¶Ï
+            //4GCDèµ·æ‰‹çƒˆç‰™åˆ¤æ–­
             if (Ammo == 1 && !NoMercy.WillHaveOneCharge(55) && (!Bloodfest.IsCoolDown && Bloodfest.EnoughLevel || !Bloodfest.EnoughLevel)) return true;
         }
         return false;
     }
 
     /// <summary>
-    /// ÒôËÙÆÆ
+    /// éŸ³é€Ÿç ´
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
     private bool CanUseSonicBreak(out IAction act)
     {
-        //»ù´¡ÅĞ¶Ï
+        //åŸºç¡€åˆ¤æ–­
         if (SonicBreak.ShouldUse(out act))
         {
-            //ÔÚ4ÈË±¾µÀÖĞ²»Ê¹ÓÃ
+            //åœ¨4äººæœ¬é“ä¸­ä¸ä½¿ç”¨
             if (!IsFullParty) return false;
 
             if (!GnashingFang.EnoughLevel && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
-            //ÔÚÁÒÑÀºóÃæÊ¹ÓÃÒôËÙÆÆ
+            //åœ¨çƒˆç‰™åé¢ä½¿ç”¨éŸ³é€Ÿç ´
             if (GnashingFang.IsCoolDown && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
-            //ÆäËûÅĞ¶Ï
+            //å…¶ä»–åˆ¤æ–­
             if (!DoubleDown.EnoughLevel && Player.HasStatus(true, StatusID.ReadyToRip)
                 && GnashingFang.IsCoolDown) return true;
 
@@ -237,28 +237,28 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     }
 
     /// <summary>
-    /// ±¶¹¥
+    /// å€æ”»
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
     private bool CanUseDoubleDown(out IAction act)
     {
-        //»ù±¾ÅĞ¶Ï
+        //åŸºæœ¬åˆ¤æ–­
         if (DoubleDown.ShouldUse(out act, mustUse: true))
         {
-            //ÔÚ4ÈË±¾µÀÖĞ
+            //åœ¨4äººæœ¬é“ä¸­
             if (IsFullParty)
             {
-                //ÔÚ4ÈË±¾µÄµÀÖĞÒÑ¾­¾ÛºÃ¹Ö¿ÉÒÔÊ¹ÓÃÏà¹Ø¼¼ÄÜ(²»ÒÆ¶¯ÇÒÉí±ßÓĞ´óÓÚ3Ö»Ğ¡¹Ö),ÓĞÎŞÇébuff
+                //åœ¨4äººæœ¬çš„é“ä¸­å·²ç»èšå¥½æ€ªå¯ä»¥ä½¿ç”¨ç›¸å…³æŠ€èƒ½(ä¸ç§»åŠ¨ä¸”èº«è¾¹æœ‰å¤§äº3åªå°æ€ª),æœ‰æ— æƒ…buff
                 if (Player.HasStatus(true, StatusID.NoMercy)) return true;
 
                 return false;
             }
 
-            //ÔÚÒôËÙÆÆºóÊ¹ÓÃ±¶¹¥
+            //åœ¨éŸ³é€Ÿç ´åä½¿ç”¨å€æ”»
             if (SonicBreak.IsCoolDown && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
-            //2µ¯ÎŞÇéµÄÌØÊâÅĞ¶Ï,ÌáÇ°Ê¹ÓÃ±¶¹¥
+            //2å¼¹æ— æƒ…çš„ç‰¹æ®Šåˆ¤æ–­,æå‰ä½¿ç”¨å€æ”»
             if (Player.HasStatus(true, StatusID.NoMercy) && !NoMercy.WillHaveOneCharge(55) && Bloodfest.WillHaveOneCharge(5)) return true;
 
         }
@@ -266,7 +266,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     }
 
     /// <summary>
-    /// ±¬·¢»÷
+    /// çˆ†å‘å‡»
     /// </summary>
     /// <param name="act"></param>
     /// <returns></returns>
@@ -274,18 +274,18 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
     {
         if (BurstStrike.ShouldUse(out act))
         {
-            //ÔÚ4ÈË±¾µÀÖĞÇÒAOEÊ±²»Ê¹ÓÃ
+            //åœ¨4äººæœ¬é“ä¸­ä¸”AOEæ—¶ä¸ä½¿ç”¨
             if (IsFullParty && DemonSlice.ShouldUse(out _)) return false;
 
-            //Èç¹ûÁÒÑÀÊ£0.5ÃëÀäÈ´ºÃ,²»ÊÍ·Å±¬·¢»÷,Ö÷ÒªÒòÎª¼¼ËÙ²»Í¬¿ÉÄÜ»áÊ¹ÁÒÑÀÑÓºóÌ«¶àËùÒÔÅĞ¶¨Ò»ÏÂ
+            //å¦‚æœçƒˆç‰™å‰©0.5ç§’å†·å´å¥½,ä¸é‡Šæ”¾çˆ†å‘å‡»,ä¸»è¦å› ä¸ºæŠ€é€Ÿä¸åŒå¯èƒ½ä¼šä½¿çƒˆç‰™å»¶åå¤ªå¤šæ‰€ä»¥åˆ¤å®šä¸€ä¸‹
             if (SonicBreak.IsCoolDown && SonicBreak.WillHaveOneCharge(0.5f) && GnashingFang.EnoughLevel) return false;
 
-            //ÎŞÇéÖĞ±¬·¢»÷ÅĞ¶¨
+            //æ— æƒ…ä¸­çˆ†å‘å‡»åˆ¤å®š
             if (Player.HasStatus(true, StatusID.NoMercy) &&
                 AmmoComboStep == 0 &&
                 !GnashingFang.WillHaveOneCharge(1)) return true;
             if (Level < 88 && Ammo == 2) return true;
-            //ÎŞÇéÍâ·ÀÖ¹Òç³ö
+            //æ— æƒ…å¤–é˜²æ­¢æº¢å‡º
             if (IsLastWeaponSkill((ActionID)BrutalShell.ID) &&
                 (Ammo == (Level >= 88 ? 3 : 2) ||
                 Bloodfest.WillHaveOneCharge(6) && Ammo <= 2 && !NoMercy.WillHaveOneCharge(10) && Bloodfest.EnoughLevel)) return true;
@@ -302,7 +302,7 @@ internal sealed class GNBCombo_Default : GNBCombo_Base<CommandType>
 
             if (!SonicBreak.EnoughLevel && Player.HasStatus(true, StatusID.NoMercy)) return true;
 
-            //±¬·¢ÆÚ,ÎŞÇéÖĞÇÒÒôËÙÆÆÔÚÀäÈ´ÖĞ
+            //çˆ†å‘æœŸ,æ— æƒ…ä¸­ä¸”éŸ³é€Ÿç ´åœ¨å†·å´ä¸­
             if (Player.HasStatus(true, StatusID.NoMercy) && SonicBreak.IsCoolDown) return true;
 
         }
